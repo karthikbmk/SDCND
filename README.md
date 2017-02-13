@@ -13,4 +13,4 @@
 
 ## Phase III (Aug - Oct 2017)
 - Path Planning
-- Deploy code onto an actual Self-Driving car
+- Deploy code onto a Self-Driving car
