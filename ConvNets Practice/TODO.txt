@@ -1,0 +1,1 @@
+1.Watch Karpathy's Dropout and ConvNet videos
