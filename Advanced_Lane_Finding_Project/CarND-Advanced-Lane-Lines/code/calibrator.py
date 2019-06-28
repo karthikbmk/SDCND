@@ -83,4 +83,19 @@ class Calibrator:
         plt.title(title)
         plt.show()
         
+        
+'''TEST_RUN ------->
+cal = Calibrator(x_corners=9, y_corners=6)
+
+calib_images_path = '../camera_cal/*.jpg'
+cal.compute_img_pts(calib_images_path, False)
+
+test_image_path = '../camera_cal/calibration1.jpg'
+cal.calibrate_camera(test_image_path)
+
+img = cal.undistort_image(test_image_path)
+cal.plot_image(img, title='Undistorted image', is_image_path=False)
+cal.plot_image(test_image_path, title='Original image', is_image_path=True)        
+
+'''
     
