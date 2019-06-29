@@ -3,6 +3,7 @@ import cv2
 import glob
 import matplotlib.pyplot as plt
 import pickle
+from helper import Helper
 
 class Calibrator:
     def __init__(self, x_corners, y_corners):        
@@ -49,8 +50,7 @@ class Calibrator:
     
     def calibrate_camera(self, image_path):
         if len(self.imgpoints) == 0 or len(self.objpoints) == 0:
-            print ("calibration unsuccessful. Have you executed compute_img_pts() ?")
-            return
+            raise Exception("calibration unsuccessful. Have you executed compute_img_pts() ?")
         
         img = cv2.imread(image_path)
         img_size = (img.shape[1], img.shape[0])
@@ -65,26 +65,20 @@ class Calibrator:
         
         
     def store_calib_coeffs(self, store_path):
+        if len(self.calib_params) == 0:
+            raise Exception('calib_params is empty. Have you run calibrate_camera ??')
+            
         pickle.dump( self.calib_params, open( store_path, "wb" ) )
         print ('stored calib coeffs @ ' + store_path)
         
     
-    def undistort_image(self, image_path):
-        img = cv2.imread(image_path)
+    def undistort_image(self, img):
         dst = cv2.undistort(img, self.calib_params['mtx'], self.calib_params['dist'], None, self.calib_params['mtx'])
         return dst
-    
-    def plot_image(self, img, title, is_image_path):
-        
-        if is_image_path:
-            img = cv2.imread(img)
-        
-        plt.imshow(img)
-        plt.title(title)
-        plt.show()
-        
-        
-'''TEST_RUN ------->
+
+
+h = Helper()
+
 cal = Calibrator(x_corners=9, y_corners=6)
 
 calib_images_path = '../camera_cal/*.jpg'
@@ -93,9 +87,10 @@ cal.compute_img_pts(calib_images_path, False)
 test_image_path = '../camera_cal/calibration1.jpg'
 cal.calibrate_camera(test_image_path)
 
-img = cal.undistort_image(test_image_path)
-cal.plot_image(img, title='Undistorted image', is_image_path=False)
-cal.plot_image(test_image_path, title='Original image', is_image_path=True)        
+cal.store_calib_coeffs('../data/calib_coeffs.pickle')
 
-'''
-    
+img = h.load_image(test_image_path)
+und_img = cal.undistort_image(img)
+h.parallel_plots(img, 'Old img', und_img, 'Undistorted img')
+
+
