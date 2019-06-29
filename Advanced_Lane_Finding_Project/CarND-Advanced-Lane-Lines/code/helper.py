@@ -26,6 +26,8 @@ class Helper:
         plt.title(title)
         plt.show()
 
-    def load_image(self, path):
+    def load_image(self, path, bgr2rgb=True):
         img = cv2.imread(path)
+        if bgr2rgb:
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         return img
