@@ -52,14 +52,17 @@ class Calibrator:
         if len(self.imgpoints) == 0 or len(self.objpoints) == 0:
             raise Exception("calibration unsuccessful. Have you executed compute_img_pts() ?")
         
-        img = cv2.imread(image_path)
-        img_size = (img.shape[1], img.shape[0])
-        
-        self.calib_params['ret'], \
-        self.calib_params['mtx'], \
-        self.calib_params['dist'], \
-        self.calib_params['rvecs'], \
-        self.calib_params['tvecs'] = cv2.calibrateCamera(self.objpoints, self.imgpoints, img_size, None, None)
+        if len(self.calib_params) == 0:
+            img = cv2.imread(image_path)
+            img_size = (img.shape[1], img.shape[0])
+
+            self.calib_params['ret'], \
+            self.calib_params['mtx'], \
+            self.calib_params['dist'], \
+            self.calib_params['rvecs'], \
+            self.calib_params['tvecs'] = cv2.calibrateCamera(self.objpoints, self.imgpoints, img_size, None, None)
+        else:
+            print ('Calibration already done. Skipping it.')
         
         return self.calib_params
         
@@ -75,7 +78,6 @@ class Calibrator:
     def undistort_image(self, img):
         dst = cv2.undistort(img, self.calib_params['mtx'], self.calib_params['dist'], None, self.calib_params['mtx'])
         return dst
-
 
 '''
 h = Helper()
