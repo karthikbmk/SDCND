@@ -77,6 +77,7 @@ class Calibrator:
         return dst
 
 
+'''
 h = Helper()
 
 cal = Calibrator(x_corners=9, y_corners=6)
@@ -92,5 +93,4 @@ cal.store_calib_coeffs('../data/calib_coeffs.pickle')
 img = h.load_image(test_image_path)
 und_img = cal.undistort_image(img)
 h.parallel_plots(img, 'Old img', und_img, 'Undistorted img')
-
-
+'''

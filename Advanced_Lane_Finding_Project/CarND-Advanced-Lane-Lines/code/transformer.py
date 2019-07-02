@@ -5,7 +5,8 @@ from helper import Helper
 
 class Transformer:
     def __init__(self):
-        pass
+        self.M = None
+        self.Minv = None
     
     def transform(self, img, corners, offset):
 
@@ -18,12 +19,13 @@ class Transformer:
 
         dst = np.float32([(0 + offset, 0 + offset), \
                           (x - offset, 0 + offset), \
-                          (x - offset, y - offset), \
-                          (0 + offset, y - offset)])
+                          (x - offset, y), \
+                          (0 + offset, y)])
 
-        M = cv2.getPerspectiveTransform(src, dst)
-        warped = cv2.warpPerspective(img, M, img_size, flags=cv2.INTER_LINEAR)
-        return warped, M
+        self.M = cv2.getPerspectiveTransform(src, dst)
+        self.Minv = cv2.getPerspectiveTransform(dst, src)
+        warped = cv2.warpPerspective(img, self.M, img_size, flags=cv2.INTER_LINEAR)
+        return warped
 
 
 '''

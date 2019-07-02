@@ -74,7 +74,7 @@ class Thresholder:
         
         return binary_output
     
-    
+''' 
 h = Helper()
 img = h.load_image('../test_images/straight_lines1.jpg')  
 
@@ -106,4 +106,4 @@ h.parallel_plots(img,'original', op, 'combined', None, 'gray')
 
 op = t.hls_threshold(img, thresh=(90, 255))
 h.parallel_plots(img,'original', op, 'hls thresh', None, 'gray')
-
+'''
