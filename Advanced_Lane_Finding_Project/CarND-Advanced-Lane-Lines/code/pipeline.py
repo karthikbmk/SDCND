@@ -75,7 +75,13 @@ class PipeLine:
             plt.plot(histogram)     
             plt.show()
     
-        self.poly_fit_img, _ = self.lane_finder.fit_polynomial(self.bin_warped)
+        if self.lane_finder.left_fit is None or self.lane_finder.right_fit is None:
+            self.poly_fit_img, _ = self.lane_finder.fit_polynomial(self.bin_warped)
+        else:
+            self.poly_fit_img, _ = self.lane_finder.search_around_poly(self.bin_warped, \
+                                                                       self.lane_finder.left_fit, \
+                                                                       self.lane_finder.right_fit)
+            
         if self.debug:
             plt.imshow(self.poly_fit_img)
         
@@ -84,10 +90,13 @@ class PipeLine:
             plt.imshow(self.result)
         
         return self.result
-
-
+    
+    
 p = PipeLine(debug=False)
-clip1 = VideoFileClip('../challenge_video.mp4')
-video_clip = clip1.fl_image(p.extract_lanes)
-video_clip.write_videofile('tmo_op.mp4', audio=False)
 
+root_dir = '../'
+fname = 'harder_challenge_video.mp4'
+clip = VideoFileClip(root_dir + fname)
+#clip1 = clip1.subclip(40, 42)
+video_clip = clip.fl_image(p.extract_lanes)
+video_clip.write_videofile('out_' + fname, audio=False)    

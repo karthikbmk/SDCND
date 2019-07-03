@@ -137,10 +137,11 @@ class LaneFinder:
         return out_img, {'left_fit' : self.left_fit, 'right_fit' : self.right_fit}
     
     def search_around_poly(self, binary_warped, left_fit, right_fit):
+
         # HYPERPARAMETER
         # Choose the width of the margin around the previous polynomial to search
         # The quiz grader expects 100 here, but feel free to tune on your own!
-        margin = 100
+        margin = 25
 
         # Grab activated pixels
         nonzero = binary_warped.nonzero()
@@ -204,21 +205,22 @@ class LaneFinder:
         result = cv2.addWeighted(out_img, 1, window_img, 0.3, 0)
 
         # Plot the polynomial lines onto the image
-        plt.plot(left_fitx, ploty, color='yellow')
-        plt.plot(right_fitx, ploty, color='yellow')
+        #plt.plot(left_fitx, ploty, color='yellow')
+        #plt.plot(right_fitx, ploty, color='yellow')
         ## End visualization steps ##
 
-        return result    
+        return result, {'left_fit' : self.left_fit, 'right_fit' : self.right_fit}    
     
     def fit_poly_2(self, img_shape, leftx, lefty, rightx, righty):
         ### TO-DO: Fit a second order polynomial to each with np.polyfit() ###
-        left_fit = np.polyfit(lefty, leftx, 2)
-        right_fit = np.polyfit(righty, rightx, 2)
+        self.left_fit = np.polyfit(lefty, leftx, 2)
+        self.right_fit = np.polyfit(righty, rightx, 2)
+        
         # Generate x and y values for plotting
         ploty = np.linspace(0, img_shape[0]-1, img_shape[0])
         ### TO-DO: Calc both polynomials using ploty, left_fit and right_fit ###
-        left_fitx = left_fit[0]*ploty**2 + left_fit[1]*ploty + left_fit[2]
-        right_fitx = right_fit[0]*ploty**2 + right_fit[1]*ploty + right_fit[2]    
+        left_fitx = self.left_fit[0]*ploty**2 + self.left_fit[1]*ploty + self.left_fit[2]
+        right_fitx = self.right_fit[0]*ploty**2 + self.right_fit[1]*ploty + self.right_fit[2]    
 
         return left_fitx, right_fitx, ploty
 
