@@ -6,10 +6,12 @@ import copy
 import os
 import tempfile
 
+'''
 import matplotlib
 matplotlib.use('agg')
 
 plt.ioff()
+'''
 
 class Helper:
     
