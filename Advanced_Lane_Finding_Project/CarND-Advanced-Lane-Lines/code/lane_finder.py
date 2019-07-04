@@ -9,6 +9,8 @@ class LaneFinder:
     def __init__(self):
         self.left_fit = None
         self.right_fit = None
+        
+        self.h = Helper()
     
     def hist(self, img):
         # TO-DO: Grab only the bottom half of the image
@@ -224,7 +226,7 @@ class LaneFinder:
 
         return left_fitx, right_fitx, ploty
 
-    def overlay_lane(self, img, left_fit, right_fit, tr):
+    def overlay_lane(self, img, left_fit, right_fit, tr, curv_obj):
     
         color_warp = np.zeros_like(img).astype(np.uint8)
 
@@ -245,6 +247,13 @@ class LaneFinder:
         
         # Combine the result with the original image
         result = cv2.addWeighted(img, 1, newwarp, 0.3, 0)
+        
+        #Overlay radius
+        radius = curv_obj.measure_curvature_real(left_fitx, right_fitx, ploty)
+        disp_l_rad = str(radius["left"])+ "m"
+        disp_r_rad = str(radius["right"]) + "m"
+        self.h.overlay_text(result, "Curvature Radius : " + str(disp_l_rad))
+        
 
         return result
 
