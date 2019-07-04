@@ -110,7 +110,7 @@ class PipeLine:
         
         return final_merged_img
     
-
+'''
 p = PipeLine(debug=False)
 root_dir = '../'
 fname = 'project_video.mp4'
@@ -119,4 +119,4 @@ clip = clip.subclip(0,1)
 video_clip = clip.fl_image(p.extract_lanes)
 video_clip.write_videofile('../output/out_' + fname, audio=False)  
 print ('please check :: ' + '../output/out_' + fname)
-
+'''
