@@ -8,6 +8,7 @@ from calibrator import Calibrator
 from transformer import Transformer
 from lane_finder import LaneFinder
 from curvature import Curvature
+from IPython.display import  clear_output
 
 class PipeLine:
     def __init__(self, debug=False):
@@ -85,8 +86,8 @@ class PipeLine:
         
         self.hist_img = self.h.hist_to_img(histogram)
         
-        plt.imshow(self.hist_img)
-        plt.show()
+        #plt.imshow(self.hist_img)
+        #plt.show()
         
         merged_res.append({'type' : 'debug', 'img' : self.hist_img,  'name' : 'hist' })
     
@@ -108,10 +109,12 @@ class PipeLine:
         merged_res.append({'type' : 'lane', 'img' : self.result,  'name' : 'result' })
         final_merged_img = self.h.image_merger(out_shape=(1280, 960), files=merged_res)
         
+        clear_output()
+        
         return final_merged_img
     
 
-
+'''
 import os
 import sys
 f = open(os.devnull, 'w')
@@ -126,4 +129,4 @@ clip = VideoFileClip(root_dir + fname)
 video_clip = clip.fl_image(p.extract_lanes)
 video_clip.write_videofile('../output/out_' + fname, audio=False)  
 print ('please check :: ' + '../output/out_' + fname)
-
+'''

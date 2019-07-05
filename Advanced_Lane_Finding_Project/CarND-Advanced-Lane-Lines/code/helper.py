@@ -44,20 +44,17 @@ class Helper:
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         return img
     
-    def overlay_text(self, img, text):
-               
-        #Tweak these params as required.
-        x = int(img.shape[1]/5)
-        y = int(img.shape[1]/16)
-        bottomLeftCornerOfText = (x, y)
-        fontScale              = 2
+    def overlay_text(self, img, text, text_x, text_y, fontscale=2):
+                       
+        text_co_ords = (text_x, text_y)
+        fontScale              = fontscale
         fontColor              = (255,255,255)
         lineType               = 2
         font                   = cv2.FONT_HERSHEY_SIMPLEX        
 
 
         cv2.putText(img, text, 
-        bottomLeftCornerOfText, 
+        text_co_ords, 
         font, 
         fontScale,
         fontColor,

@@ -34,3 +34,14 @@ class Curvature:
         right_curverad = self.curve_radius(right_fit_cr[0], y_eval, right_fit_cr[1])
 
         return {'left' : int(left_curverad), 'right' : int(right_curverad)} 
+    
+    def compute_offset(self, img_center_x, lane_center_x):
+        offset = img_center_x - lane_center_x
+
+        if abs(offset) == offset:
+            direction = 'right'
+        else:
+            direction = 'left'
+            
+        return round(abs(offset * self.xm_per_pix),2), direction
+    

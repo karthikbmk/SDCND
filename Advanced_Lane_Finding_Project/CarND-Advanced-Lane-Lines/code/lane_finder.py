@@ -252,7 +252,13 @@ class LaneFinder:
         radius = curv_obj.measure_curvature_real(left_fitx, right_fitx, ploty)
         disp_l_rad = str(radius["left"])+ "m"
         disp_r_rad = str(radius["right"]) + "m"
-        self.h.overlay_text(result, "Curvature Radius : " + str(disp_l_rad))
+        self.h.overlay_text(result, "Curvature Radius : " + str(disp_l_rad), int(result.shape[0]/5), int(result.shape[0]/16), 1)
+        
+        img_center_x = result.shape[0]//2
+        lane_center_x = (right_fitx[0] - left_fitx[0])/2 + left_fitx[0]
+        offset, direction = curv_obj.compute_offset(img_center_x, lane_center_x)
+        res = 'Car is ' + str(offset) + 'm to the ' + str(direction) + ' from lane center' 
+        self.h.overlay_text(result, res, int(result.shape[0]/5), int(result.shape[0]/8), 1)
         
 
         return result
