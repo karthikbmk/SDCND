@@ -54,10 +54,10 @@ Code for camera calibration is present in `code/calibrate.py`
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 
 Code for thresholding is at `code/thresholder.py`  
-Used the combination of following techniques with a Sobel Kernel of size 3:  
+Used the combination of following techniques with a Sobel Kernel of size 3: 
 
 | THRESHOLDER        | MIN_VAL           | MAX_VAL  | MISC  |
-| ------------- |:-------------:| -----:| |
+| ------------- |:-------------:| -----:|:-----:|
 | HLS      | 200 | 255 | N/A |
 | Absolute      | 20      |   100 | orient='x' |
 | Magnitude | 20      |    100 | N/A |
