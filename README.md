@@ -4,10 +4,10 @@
 - Traffic Sign Classifier
 - Advanced Lane Detection
 - Behavioural Cloning
-- Extended Kalman Filters 
+- Sensor Fusion with EKF (Extended Kalman Filters)
 
 ## Term II (Sep - Dec 2019)
-- Localisation
+- Localization
 - Path Planning 
 - Control
 - System Integration
