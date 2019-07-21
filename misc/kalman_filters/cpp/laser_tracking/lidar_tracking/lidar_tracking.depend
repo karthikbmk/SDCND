@@ -1,0 +1,30 @@
+# depslib dependency file v1.0
+1563743146 source:/home/self_driving/SDCND/misc/kalman_filters/cpp/laser_tracking/lidar_tracking/kalman_filter.cpp
+	"kalman_filter.h"
+
+1563743436 /home/self_driving/SDCND/misc/kalman_filters/cpp/laser_tracking/lidar_tracking/kalman_filter.h
+	"eigen3/Eigen/Dense"
+
+1563743451 source:/home/self_driving/SDCND/misc/kalman_filters/cpp/laser_tracking/lidar_tracking/main.cpp
+	<iostream>
+	<sstream>
+	<vector>
+	"eigen3/Eigen/Eigen"
+	"measurement_package.h"
+	"tracking.h"
+
+1563743458 /home/self_driving/SDCND/misc/kalman_filters/cpp/laser_tracking/lidar_tracking/measurement_package.h
+	"eigen3/Eigen/Dense"
+
+1563743179 /home/self_driving/SDCND/misc/kalman_filters/cpp/laser_tracking/lidar_tracking/tracking.h
+	<vector>
+	<string>
+	<fstream>
+	"kalman_filter.h"
+	"measurement_package.h"
+
+1563743465 source:/home/self_driving/SDCND/misc/kalman_filters/cpp/laser_tracking/lidar_tracking/tracking.cpp
+	"tracking.h"
+	<iostream>
+	"eigen3/Eigen/Dense"
+
