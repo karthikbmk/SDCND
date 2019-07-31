@@ -1,3 +1,0 @@
-/home/self_driving/temp_dir/ekf_project_ud/CarND-Extended-Kalman-Filter-Project/build/CMakeFiles/rebuild_cache.dir
-/home/self_driving/temp_dir/ekf_project_ud/CarND-Extended-Kalman-Filter-Project/build/CMakeFiles/ExtendedKF.dir
-/home/self_driving/temp_dir/ekf_project_ud/CarND-Extended-Kalman-Filter-Project/build/CMakeFiles/edit_cache.dir
