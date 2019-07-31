@@ -21,6 +21,7 @@ void KalmanFilter::Init(VectorXd &x_in, MatrixXd &P_in, MatrixXd &F_in,
   H_ = H_in;
   R_ = R_in;
   Q_ = Q_in;
+
 }
 
 void KalmanFilter::Predict() {
@@ -83,11 +84,12 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     VectorXd Hx = linearize(x_);
     VectorXd y = z - Hx;
 
-    MatrixXd Hj = Tools::CalculateJacobian(x_);
+    Tools t_ = Tools();
+    MatrixXd Hj = t_.CalculateJacobian(x_);
     MatrixXd Hj_t = Hj.transpose();
     MatrixXd S = Hj * P_ * Hj_t + R_;
     MatrixXd Si = S.inverse();
-    MatrixXd PHt = P_ * Ht;
+    MatrixXd PHt = P_ * Hj_t;
     MatrixXd K = PHt * Si;
 
     //new estimate
