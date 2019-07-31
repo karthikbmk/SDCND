@@ -1,10 +1,11 @@
 #include "kalman_filter.h"
+#include "tools.h"
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 
-/* 
- * Please note that the Eigen library does not initialize 
+/*
+ * Please note that the Eigen library does not initialize
  *   VectorXd or MatrixXd objects with zeros upon creation.
  */
 
@@ -53,10 +54,46 @@ void KalmanFilter::Update(const VectorXd &z) {
 
 }
 
+VectorXd linearize(const VectorXd &x)
+{
+
+    float px = x[0];
+    float py = x[1];
+    float vx = x[2];
+    float vy = x[3];
+
+    float rho = sqrt(pow(px, 2) + pow(py, 2));
+
+    //possible_bug - handle div by 0 && atan bw -pi and +pi
+    float phi = atan(py/ px);
+
+    //possible bug - handle div by 0
+    float rho_dot = px*vx + py*vy / rho;
+
+    VectorXd Hx(3);
+    Hx << rho, phi, rho_dot;
+
+    return Hx;
+}
+
 void KalmanFilter::UpdateEKF(const VectorXd &z) {
   /**
    * TODO: update the state by using Extended Kalman Filter equations
    */
+    VectorXd Hx = linearize(x_);
+    VectorXd y = z - Hx;
 
-  
+    MatrixXd Hj = Tools::CalculateJacobian(x_);
+    MatrixXd Hj_t = Hj.transpose();
+    MatrixXd S = Hj * P_ * Hj_t + R_;
+    MatrixXd Si = S.inverse();
+    MatrixXd PHt = P_ * Ht;
+    MatrixXd K = PHt * Si;
+
+    //new estimate
+    x_ = x_ + (K * y);
+    long x_size = x_.size();
+    MatrixXd I = MatrixXd::Identity(x_size, x_size);
+    P_ = (I - K * Hj) * P_;
+
 }
