@@ -38,12 +38,34 @@ FusionEKF::FusionEKF() {
    */
 
 
+
+
 }
 
 /**
  * Destructor.
  */
 FusionEKF::~FusionEKF() {}
+
+VectorXd extractState(const double rho,const double phi,const double rho_dot)
+{
+    VectorXd state(4);
+
+    double rho_sq = pow(rho, 2);
+    double tan_phi_sq = pow(tan(phi), 2);
+
+    double px = sqrt(rho_sq / (1 + tan_phi_sq));
+    double py = tan(phi) * px;
+
+    double vx = 0;
+    double vy = 0;
+    state << px, py, vx, vy;
+
+
+    return state;
+}
+
+
 
 void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   /**
@@ -62,15 +84,28 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     ekf_.x_ << 1, 1, 1, 1;
 
     if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
-      // TODO: Convert radar from polar to cartesian coordinates 
+      // TODO: Convert radar from polar to cartesian coordinates
       //         and initialize state.
+     double rho = measurement_pack.raw_measurements_[0],
+            phi = measurement_pack.raw_measurements_[1],
+            rho_dot = measurement_pack.raw_measurements_[2];
+
+     ekf_.x_ = extractState(rho, phi, rho_dot);
 
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
       // TODO: Initialize state.
 
+     double init_px = measurement_pack.raw_measurements_[0];
+     double init_py = measurement_pack.raw_measurements_[1];
+     double init_vx = 0;
+     double init_vy = 0;
+
+     ekf_.x_ << init_px, init_py, init_vx, init_vy;
+
     }
 
+    previous_timestamp_ = measurement_pack.timestamp_;
     // done initializing, no need to predict or update
     is_initialized_ = true;
     return;

@@ -58,18 +58,18 @@ void KalmanFilter::Update(const VectorXd &z) {
 VectorXd linearize(const VectorXd &x)
 {
 
-    float px = x[0];
-    float py = x[1];
-    float vx = x[2];
-    float vy = x[3];
+    double px = x[0];
+    double py = x[1];
+    double vx = x[2];
+    double vy = x[3];
 
-    float rho = sqrt(pow(px, 2) + pow(py, 2));
+    double rho = sqrt(pow(px, 2) + pow(py, 2));
 
     //possible_bug - handle div by 0 && atan bw -pi and +pi
-    float phi = atan(py/ px);
+    double phi = atan(py/ px);
 
     //possible bug - handle div by 0
-    float rho_dot = px*vx + py*vy / rho;
+    double rho_dot = px*vx + py*vy / rho;
 
     VectorXd Hx(3);
     Hx << rho, phi, rho_dot;
