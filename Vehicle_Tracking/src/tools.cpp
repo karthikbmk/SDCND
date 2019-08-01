@@ -1,5 +1,6 @@
 #include "tools.h"
 #include <iostream>
+#include <math.h>
 
 using Eigen::VectorXd;
 using Eigen::MatrixXd;
@@ -57,6 +58,7 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   double vx = x_state(2);
   double vy = x_state(3);
 
+  double epsilon = pow(10, -20);
   VectorXd hx(3);
   try
   {
@@ -64,11 +66,12 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
       double d2 = sqrt(d1);
       double d3 = pow(d1, 1.5);
 
-      Hj << px / d2 , py / d2, 0 , 0,
-            -py/ d1, px / d1, 0, 0,
-            py*(vx*py - vy*px)/ d3, px*(vy*px - vx*py)/ d3, px/ d2, py / d2;
+      Hj << (px + epsilon) / (d2 + epsilon) , (py +epsilon) / (d2 + epsilon), 0 , 0,
+            (-py + epsilon)/ (d1 + epsilon), (px + epsilon) / (d1 + epsilon), 0, 0,
+            (py*(vx*py - vy*px) + epsilon)/ (d3 + epsilon) , 
+            (px*(vy*px - vx*py) + epsilon)/ (d3 + epsilon), (px + epsilon)/ (d2 + epsilon), (py + epsilon) / (d2 + epsilon);
 
-
+     cout << "WOW " << Hj;
       return Hj;
 
   }
@@ -77,7 +80,28 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
     cout << p << endl;
     return Hj;
   }
-
-
-
 }
+
+
+
+
+double Tools::normalize(double n)
+{
+    if (n > M_PI)
+    {
+        while (n > M_PI)
+        {
+            n = n - (2*M_PI);
+        }
+    }
+
+    else if (n < -M_PI)
+    {
+        while (n < M_PI)
+        {
+            n = n + (2*M_PI);
+        }
+    }
+    return n;
+}
+
