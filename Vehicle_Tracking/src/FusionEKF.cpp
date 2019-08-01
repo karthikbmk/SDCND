@@ -132,13 +132,13 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
                  0, 1, 0, 0;
 
      ekf_.Init(x_, P_, F_, H_laser_, R_laser_, Q_);
+     cout << "Lidar Init " << endl;
 
     }
 
     previous_timestamp_ = measurement_pack.timestamp_;
     // done initializing, no need to predict or update
     is_initialized_ = true;
-    cout << "Lidar Init " << endl;
     return;
   }
 
@@ -155,6 +155,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 
   // compute the time elapsed between the current and previous measurements
   // dt - expressed in seconds
+
+  cout << "Entered prediction code " << endl ;
   float dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0;
   previous_timestamp_ = measurement_pack.timestamp_;
 
@@ -178,7 +180,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
             0, dt_cube * noise_ay/ 2, 0, dt_sq * noise_ay;
   // 3. Call the Kalman Filter predict() function
 
-
+  cout << "about to predict" << endl;
 
   ekf_.Predict();
     cout << "predict " << endl;
@@ -197,6 +199,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     // TODO: Radar updates
     cout << "starting ekf update" << endl;
     ekf_.R_ = R_radar_;
+    ekf_.H_ = Hj_;
 
     VectorXd z(3);
     z << measurement_pack.raw_measurements_[0],
@@ -209,6 +212,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     // TODO: Laser updates
     cout << "starting normal update 2" << endl;
     ekf_.R_ = R_laser_;
+    ekf_.H_ = H_laser_;
 
     VectorXd z(2);
     z << measurement_pack.raw_measurements_[0],
