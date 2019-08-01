@@ -20,5 +20,5 @@
 
 [//]: # (Image References)
 [video_gif]: ./output/video.gif "Vehicle Tracking"
-[flowchart]: ./output/flowchart.gif "Flowchart"
-[equations]: ./output/equations.gif "Equations"
+[flowchart]: ./output/flowchart.png "Flowchart"
+[equations]: ./output/equations.jpg "Equations"
