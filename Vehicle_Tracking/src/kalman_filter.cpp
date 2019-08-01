@@ -1,5 +1,9 @@
 #include "kalman_filter.h"
 #include "tools.h"
+#include <iostream>
+
+using std::cout;
+using std::endl;
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -81,21 +85,39 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   /**
    * TODO: update the state by using Extended Kalman Filter equations
    */
+
+    cout << "attempting linearize " << endl;
+    cout << "x_ :: " << x_ << endl;
     VectorXd Hx = linearize(x_);
     VectorXd y = z - Hx;
 
+    cout << "y -hx comp" << endl;
     Tools t_ = Tools();
     MatrixXd Hj = t_.CalculateJacobian(x_);
     MatrixXd Hj_t = Hj.transpose();
+
+    cout << "jacob and transp comp" << endl;
+
+    cout << "Hj :: " << Hj.rows() << " " << Hj.cols() << endl;
+    cout << "P_ :: " << P_.rows() << " " << P_.cols() << endl;
+    cout << "R_ :: " << R_.rows() << " " << R_.cols() << endl;
     MatrixXd S = Hj * P_ * Hj_t + R_;
+
+
     MatrixXd Si = S.inverse();
+
+    cout << "S inverse comp" << endl;
+
     MatrixXd PHt = P_ * Hj_t;
     MatrixXd K = PHt * Si;
 
+    cout << "gain comp" << endl;
     //new estimate
     x_ = x_ + (K * y);
     long x_size = x_.size();
     MatrixXd I = MatrixXd::Identity(x_size, x_size);
     P_ = (I - K * Hj) * P_;
+
+    cout << "full update comp" <<endl;
 
 }

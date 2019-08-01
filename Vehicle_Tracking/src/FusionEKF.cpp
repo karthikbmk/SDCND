@@ -36,10 +36,7 @@ FusionEKF::FusionEKF() {
    * TODO: Finish initializing the FusionEKF.
    * TODO: Set the process and measurement noises
    */
-
-
-
-
+  tools = Tools();
 }
 
 /**
@@ -78,7 +75,27 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
      * You'll need to convert radar from polar to cartesian coordinates.
      */
 
+      MatrixXd F_ = MatrixXd(4, 4);
+      F_ << 1, 0, 1, 0,
+                0, 1, 0, 1,
+                0, 0, 1, 0,
+                0, 0, 0, 1;
+
+      MatrixXd P_ = MatrixXd(4, 4);
+      P_ << 1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1000, 0,
+                0, 0, 0, 1000;
+
+      MatrixXd Q_ = MatrixXd(4, 4);
+      Q_ << 0, 0, 0, 0,
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            0, 0, 0, 0;
+
+
     // first measurement
+
     cout << "EKF: " << endl;
     ekf_.x_ = VectorXd(4);
     ekf_.x_ << 1, 1, 1, 1;
@@ -90,8 +107,15 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
             phi = measurement_pack.raw_measurements_[1],
             rho_dot = measurement_pack.raw_measurements_[2];
 
-     ekf_.x_ = extractState(rho, phi, rho_dot);
+     VectorXd x_ = extractState(rho, phi, rho_dot);
+     /*
+     Have : x_, P_, F_, R_, Q_
+     Want : H_laser or Hj
+     */
+     Hj_ = tools.CalculateJacobian(x_);
+     ekf_.Init(x_, P_, F_, Hj_, R_radar_, Q_);
 
+    cout << "rader Init " << endl;
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
       // TODO: Initialize state.
@@ -101,13 +125,20 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
      double init_vx = 0;
      double init_vy = 0;
 
-     ekf_.x_ << init_px, init_py, init_vx, init_vy;
+     VectorXd x_(4);
+     x_ << init_px, init_py, init_vx, init_vy;
+
+     H_laser_ << 1, 0, 0, 0,
+                 0, 1, 0, 0;
+
+     ekf_.Init(x_, P_, F_, H_laser_, R_laser_, Q_);
 
     }
 
     previous_timestamp_ = measurement_pack.timestamp_;
     // done initializing, no need to predict or update
     is_initialized_ = true;
+    cout << "Lidar Init " << endl;
     return;
   }
 
@@ -122,7 +153,35 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    * Use noise_ax = 9 and noise_ay = 9 for your Q matrix.
    */
 
+  // compute the time elapsed between the current and previous measurements
+  // dt - expressed in seconds
+  float dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0;
+  previous_timestamp_ = measurement_pack.timestamp_;
+
+  // TODO: YOUR CODE HERE
+
+  // 1. Modify the F matrix so that the time is integrated
+  ekf_.F_(0, 2) = dt;
+  ekf_.F_(1, 3) = dt;
+
+  // 2. Set the process covariance matrix Q
+
+  float dt_cube = pow(dt, 3);
+  float dt_sq = pow(dt, 2);
+  float dt_quad = pow(dt, 4);
+
+  float noise_ax = 9, noise_ay = 9;
+
+  ekf_.Q_ << dt_quad * noise_ax/ 4, 0, dt_cube * noise_ax/ 2, 0,
+            0, dt_quad * noise_ay/ 4, 0, dt_cube * noise_ay/ 2,
+            dt_cube * noise_ax/ 2, 0, dt_sq * noise_ax, 0,
+            0, dt_cube * noise_ay/ 2, 0, dt_sq * noise_ay;
+  // 3. Call the Kalman Filter predict() function
+
+
+
   ekf_.Predict();
+    cout << "predict " << endl;
 
   /**
    * Update
@@ -136,10 +195,27 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 
   if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
     // TODO: Radar updates
+    cout << "starting ekf update" << endl;
+    ekf_.R_ = R_radar_;
 
+    VectorXd z(3);
+    z << measurement_pack.raw_measurements_[0],
+        measurement_pack.raw_measurements_[1],
+        measurement_pack.raw_measurements_[2];
+
+    ekf_.UpdateEKF(z);
+        cout << "ekf - UpdateEKF() " << endl;
   } else {
     // TODO: Laser updates
+    cout << "starting normal update 2" << endl;
+    ekf_.R_ = R_laser_;
 
+    VectorXd z(2);
+    z << measurement_pack.raw_measurements_[0],
+        measurement_pack.raw_measurements_[1];
+
+    ekf_.Update(z);
+        cout << "ekf - Update() " << endl;
   }
 
   // print the output
