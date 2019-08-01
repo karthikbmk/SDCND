@@ -12,8 +12,13 @@
 * Use the Kalman Gain to update the estimate and estimation errors
 * Repeat the above process for all measurements from the Sensor
 
+### Flowchart of the pipeline:
+![alt text][flowchart]
 
+### Predict and Update equations:
+![alt text][equations]
 
 [//]: # (Image References)
-
-[video_gif]: ./output/out_project_video.gif "Vehicle Tracking"
+[video_gif]: ./output/video.gif "Vehicle Tracking"
+[flowchart]: ./output/flowchart.gif "Flowchart"
+[equations]: ./output/equations.gif "Equations"
