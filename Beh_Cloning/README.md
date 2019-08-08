@@ -24,7 +24,7 @@ Data Collection
     
  * Dataset sample :
  
- ![alt text][sample]
+    ![alt text][sample]
  
  
  
