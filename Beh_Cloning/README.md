@@ -22,9 +22,9 @@ Data Collection
     * Right Camera
     
     
- * Dataset sample :
- 
-    ![alt text][sample]
+ * Dataset sample :  
+    
+    ![alt text] [f_sample] ![alt text][l_sample] ![alt text][r_sample]
  
  
  
@@ -42,4 +42,6 @@ Data Collection
  
  
 [//]: # (Image References)
-[sample]: ./misc/sample.jpg "Sample"
+[f_sample]: ./misc/front_sample.jpg "Front view"
+[l_sample]: ./misc/left_sample.jpg "Left view"
+[r_sample]: ./misc/right_sample.jpg "Right view"
