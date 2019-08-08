@@ -25,8 +25,7 @@ Data Collection
  * Dataset sample :    
     Front, Left and Right Camera's samples  
     ![alt text][f_sample] ![alt text][l_sample] ![alt text][r_sample]
-    
- 
+     
  
  
  
