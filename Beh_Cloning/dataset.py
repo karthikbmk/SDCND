@@ -8,11 +8,14 @@ class Dataset:
     def __init__(self, path = '/Users/karthik/Desktop/beta_simulator_mac/Data/driving_log.csv'):
         self.path = path
         self.root_path = self.path.split('/')
+        self.root_path = "/".join(self.root_path[0:len(self.root_path)-1]) + '/IMG/'
         self.helper = Helper()
-        self.augmentors = {'flip'}
+        self.augmentors = {'flip'} # add other augmentors such as left, right etc..
         self.aug_factor = len([self.augmentors])
+        self.train_size = -1
+        self.val_size = -1
 
-    def get_generator(self, samples, batch_size=32, gen_type= 'train_gen'):
+    def create_generator(self, samples, batch_size=32, gen_type= 'train_gen'):
         '''
         :param samples: A list of dictionaries containing the csv dataset.
         :param batch_size: Size of the batch
@@ -42,7 +45,7 @@ class Dataset:
 
                             images.append(flipped_center_img)
                             angles.append(flipped_center_angle)
-                            
+
                 # trim image to only see section with road
                 X_train = np.array(images)
                 y_train = np.array(angles)
@@ -53,8 +56,16 @@ class Dataset:
         rev_img = cv2.flip(img, 1)
         return  rev_img
 
+    def get_train_val_gens(self, batch_size=32):
 
-'''
-dataset = Dataset()
-X, y =dataset.get_X_y()
-'''
+        all_samples = self.helper.csv_to_list(self.path)
+        train_samples, validation_samples = train_test_split(all_samples, test_size=0.2)
+
+        self.train_size = len(train_samples)
+        self.val_size = len(validation_samples)
+
+        train_generator = self.create_generator(train_samples, batch_size=batch_size)
+        validation_generator = self.create_generator(validation_samples, batch_size=batch_size)
+
+        return train_generator, validation_generator
+
