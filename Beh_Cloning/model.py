@@ -1,5 +1,5 @@
 from keras.models import Sequential
-from keras.layers import Dense, Flatten, Conv2D, MaxPool2D, Dropout
+from keras.layers import Dense, Flatten, Conv2D, MaxPool2D, Dropout, Cropping2D
 from dataset import  Dataset
 class Model:
     def __init__(self):
@@ -7,11 +7,10 @@ class Model:
 
     def architecture(self, X, y):
         model = Sequential()
-        model.add(Conv2D(32, (5, 5), padding="same", activation="relu", input_shape=(160, 320, 3)))
+        model.add(Cropping2D(cropping=((50, 20), (0, 0)), input_shape=(160, 320, 3)))
+        model.add(Conv2D(32, (5, 5), padding="same", activation="relu"))
         model.add(MaxPool2D(pool_size=(2, 2)))
         model.add(Conv2D(64, (3, 3), padding="same", activation="relu"))
-        model.add(MaxPool2D(pool_size=(2, 2)))
-        model.add(Conv2D(128, (3, 3), padding="same", activation="relu"))
         model.add(Dropout(rate=0.1))
         model.add(MaxPool2D(pool_size=(2, 2)))
         model.add(Flatten())
