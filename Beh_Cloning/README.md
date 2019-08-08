@@ -13,7 +13,7 @@ Data Collection
     Method Name | Method Description  | Number of laps per track | Which track ?
     ------------- |------------- | -------------| ------------- | 
     Center Drive |Drive at the center of the lane  | 2 |  Both |
-    Curve Drive |Drive smoothly around the curves  | 2| Both |
+    Curve Drive |Drive smoothly around the curves  | 1| Both |
     Recovery Drive |Recover the car from the side of track onto the middle  | 1 | Both |
     
 * The above methods were used collect data from these cameras : 
@@ -42,4 +42,4 @@ Data Collection
  
  
 [//]: # (Image References)
-[sample]: ./misc/sample.png "Sample"
+[sample]: ./misc/sample.jpg "Sample"
