@@ -1,6 +1,7 @@
 from keras.models import Sequential
 from keras.layers import Dense, Flatten, Conv2D, MaxPool2D, Dropout, Cropping2D, Lambda
 from dataset import  Dataset
+from keras.callbacks import ModelCheckpoint
 from math import ceil
 import  matplotlib.pyplot as plt
 class Model:
@@ -20,6 +21,9 @@ class Model:
         model.add(Conv2D(64, (3, 3), padding="valid", activation="relu"))
         model.add(MaxPool2D(pool_size=(2, 2)))
         model.add(Conv2D(128, (3, 3), padding="valid", activation="relu"))
+        model.add(Conv2D(256, (3, 3), padding="valid", activation="relu"))
+        model.add(Dropout(rate=0.1))
+        model.add(Conv2D(512, (3, 3), padding="valid", activation="relu"))
         model.add(MaxPool2D(pool_size=(2, 2)))
         model.add(Flatten())
         model.add(Dense(64))
@@ -48,8 +52,11 @@ class Model:
         steps_per_ep = ceil((d.train_size * d.aug_factor) / batch_size)
         val_steps = ceil((d.val_size * d.aug_factor) / batch_size)
 
+        filepath = "model-{epoch:02d}-{val_loss:.2f}.hdf5"
+        checkpoint = ModelCheckpoint(filepath, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
+
         history_object = self.model.fit_generator(train_gen, steps_per_epoch=steps_per_ep, validation_data=val_gen, \
-                                 validation_steps=val_steps, epochs=5, verbose=1)
+                                 validation_steps=val_steps, epochs=2, verbose=1, callbacks=[checkpoint])
 
         self.store_history(history_object)
         self.model.save('model.h5')
