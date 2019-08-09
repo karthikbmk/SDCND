@@ -5,7 +5,7 @@ from sklearn.utils import  shuffle
 from sklearn.model_selection import train_test_split
 
 class Dataset:
-    def __init__(self, path = '/Users/karthik/Desktop/beta_simulator_mac/Data/driving_log.csv'):
+    def __init__(self, path = '/opt/SDCND/Beh_Cloning/data/Data/driving_log.csv'):
         self.path = path
         self.root_path = self.path.split('/')
         self.root_path = "/".join(self.root_path[0:len(self.root_path)-1]) + '/IMG/'
