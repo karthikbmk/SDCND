@@ -91,7 +91,7 @@ class Model:
         model.compile(loss='mse', optimizer='adam')
 
         #Fit new model
-        self.fit_model(self, frozen_model, batch_size=32, out_model_name='model')
+        self.fit_model(self, frozen_model, batch_size, out_model_name)
 
     def transfer_learn_pipeline(self, old_model_name, new_data_path):
 
