@@ -58,7 +58,7 @@ class Dataset:
 
     def get_train_val_gens(self, batch_size=32):
 
-        all_samples = self.helper.csv_to_list(self.path)[0:100]
+        all_samples = self.helper.csv_to_list(self.path)
         train_samples, validation_samples = train_test_split(all_samples, test_size=0.2)
 
         self.train_size = len(train_samples)
