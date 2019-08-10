@@ -1,0 +1,5 @@
+{
+  "csv_path" : "/Users/karthik/Desktop/beta_simulator_mac/Data/driving_log.csv",
+  "models_path" : "./trained_models/",
+  "history_path" : "./misc/history.png"
+}
