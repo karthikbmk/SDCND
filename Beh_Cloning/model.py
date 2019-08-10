@@ -4,6 +4,8 @@ from dataset import  Dataset
 from keras.callbacks import ModelCheckpoint
 from math import ceil
 from helper import Helper
+import matplotlib
+matplotlib.use('PS')
 import  matplotlib.pyplot as plt
 import json
 
@@ -60,10 +62,10 @@ class Model:
             model.layers[layer_id].trainable = False
         return model
 
-    def fit_model(self, model, batch_size=32, out_model_name='model'):
+    def fit_model(self, train_type, model, batch_size=32, out_model_name='model' ,epochs=4):
 
         #Load dataset
-        csv_path = self.params['csv_path']
+        csv_path = self.params[train_type]
         d = Dataset(csv_path)
         train_gen, val_gen = d.get_train_val_gens(batch_size= batch_size)
 
@@ -76,13 +78,13 @@ class Model:
         checkpoint = ModelCheckpoint(filepath, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
 
         history_object = model.fit_generator(train_gen, steps_per_epoch=steps_per_ep, validation_data=val_gen, \
-                                 validation_steps=val_steps, epochs=2, verbose=1, callbacks=[checkpoint])
+                                 validation_steps=val_steps, epochs=epochs, verbose=1, callbacks=[checkpoint])
 
         #Store history
         self.store_history(history_object)
 
 
-    def transfer_learn(self, model, new_data_set_path, freeze_layer_ids, batch_size=32, out_model_name = 'tl_model'):
+    def transfer_learn(self, model, train_type, freeze_layer_ids, batch_size=32, out_model_name = 'tl_model'):
 
         #Freeze Layers
         frozen_model = self.freeze_layers(model, freeze_layer_ids)
@@ -91,23 +93,32 @@ class Model:
         model.compile(loss='mse', optimizer='adam')
 
         #Fit new model
-        self.fit_model(self, frozen_model, batch_size, out_model_name)
+        self.fit_model(train_type, frozen_model, batch_size, out_model_name, epochs=3)
 
-    def transfer_learn_pipeline(self, old_model_name, new_data_path):
+    def do_transfer_learn(self, train_type, old_model_name, trained_version):
 
         #Load old model
         old_model = load_model(self.params['models_path'] + old_model_name)
+        print ('loaded old model')
 
         freeze_layer_ids = list(range(10))
-        batch_size = 32
-        out_model_name = 'tl_model'
+        batch_size = 16
+        out_model_name = 'tl_v' + str(trained_version + 1) +'_model'
 
-        self.transfer_learn(old_model, new_data_path, freeze_layer_ids, batch_size, out_model_name)
+        self.transfer_learn(old_model, train_type, freeze_layer_ids, batch_size, out_model_name)
         print ('transfer learning complete.')
 
+'''
+Fit Model code
 m = Model()
-#m.fit_model(model=m.model, batch_size=32, out_model_name='dummy_model')
+m.fit_model(model=m.model, batch_size=32, out_model_name='dummy_model')
+'''
 
-
+'''
+Transfer learning code
+'''
+m = Model()
+trained_version = 11
+m.do_transfer_learn('tf_csv_path', 'tl_v' + str(trained_version) + '_model-03-0.03.hdf5', trained_version)
 
 
