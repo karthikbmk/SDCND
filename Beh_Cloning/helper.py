@@ -1,5 +1,7 @@
 from csv import DictReader
 import cv2
+import json
+
 class Helper:
     def __init__(self):
         pass
@@ -18,3 +20,10 @@ class Helper:
     def show_image(self, img):
         cv2.imshow('test', img)
         cv2.waitKey()
+
+
+    def load_json(self,js_path):
+
+        with open(js_path, 'r') as f:
+            js = json.load(f)
+            return js
