@@ -85,27 +85,13 @@ class Model:
     def transfer_learn(self, model, new_data_set_path, freeze_layer_ids, batch_size=32, out_model_name = 'tl_model'):
 
         #Freeze Layers
-        self.frozen_model = self.freeze_layers(model, freeze_layer_ids)
+        frozen_model = self.freeze_layers(model, freeze_layer_ids)
 
-        # Define loss fn and optimizer
+        #Define loss fn and optimizer
         model.compile(loss='mse', optimizer='adam')
 
-        #Load new dataset
-        d = Dataset(new_data_set_path)
-        train_gen, val_gen = d.get_train_val_gens(batch_size=batch_size)
-
-        steps_per_ep = ceil((d.train_size * d.aug_factor) / batch_size)
-        val_steps = ceil((d.val_size * d.aug_factor) / batch_size)
-
-        #Retrain on new dataset
-        models_path = self.params['models_path']
-        filepath = models_path + out_model_name + "-{epoch:02d}-{val_loss:.2f}.hdf5"
-        checkpoint = ModelCheckpoint(filepath, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
-
-        history_object = self.model.fit_generator(train_gen, steps_per_epoch=steps_per_ep, validation_data=val_gen, \
-                                                  validation_steps=val_steps, epochs=2, verbose=1, callbacks=[checkpoint])
-
-        self.store_history(history_object)
+        #Fit new model
+        self.fit_model(self, frozen_model, batch_size=32, out_model_name='model')
 
     def transfer_learn_pipeline(self, old_model_name, new_data_path):
 
