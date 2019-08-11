@@ -105,6 +105,8 @@ Data Collection
     
  * <b>Training curves</b>  
     ![alt_text][loss]  
+ 
+ * 80% of the collected data was used for training, and 20% for validation  
     
  Testing
  ---
