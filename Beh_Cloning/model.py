@@ -108,6 +108,8 @@ class Model:
         self.transfer_learn(old_model, train_type, freeze_layer_ids, batch_size, out_model_name)
         print ('transfer learning complete.')
 
+
+
 '''
 Fit Model code
 m = Model()
@@ -116,9 +118,12 @@ m.fit_model(model=m.model, batch_size=32, out_model_name='dummy_model')
 
 '''
 Transfer learning code
-'''
 m = Model()
 trained_version = 11
 m.do_transfer_learn('tf_csv_path', 'tl_v' + str(trained_version) + '_model-03-0.03.hdf5', trained_version)
+'''
+
+model = load_model('model.h5')
+print (model.summary())
 
 

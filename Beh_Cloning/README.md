@@ -1,5 +1,8 @@
 # Behavioral Cloning Project
 
+Track 1 (easy) | Track 2 (hard)
+--------------- | -------------
+![alt_text][t1.gif] | ![alt_text][t2.gif]
 
 The project was divided into these phases :  
 * Data Collection
