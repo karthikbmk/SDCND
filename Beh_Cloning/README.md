@@ -2,7 +2,7 @@
 
 Track 1 (easy) | Track 2 (hard)
 --------------- | -------------
-![alt_text][t1.gif] | ![alt_text][t2.gif]
+![alt_text][t1] | ![alt_text][t2]
 
 The project was divided into these phases :  
 * Data Collection
@@ -74,7 +74,7 @@ Data Collection
     batch size | 32 during initial full training. <br><br> 16 during transfer learning
     loss function | mse
     optimizer | adam
-    epochs | 4 during full training. <br><br> 2 during transfer learning 
+    epochs | 3 during full training. <br><br> 2 during transfer learning 
     
  
  * <b> Transfer learning </b> : 
@@ -101,7 +101,10 @@ Data Collection
     dense_2 (Dense)       |  N      
     dropout_3 (Dropout)  |   N         
     dense_3 (Dense)    |     N       
-    dense_4 (Dense)   |      N
+    dense_4 (Dense)   |      N  
+    
+ * <b>Training curves</b>  
+    ![alt_text][loss]  
     
  Testing
  ---
@@ -116,3 +119,5 @@ Data Collection
 [f_sample]: ./misc/front_sample.jpg "Front view"
 [l_sample]: ./misc/left_sample.jpg "Left view"
 [r_sample]: ./misc/right_sample.jpg "Right view"
+[t1]: ./misc/track1.gif
+[loss]: ./misc/history.png
