@@ -1,5 +1,6 @@
 # Behavioral Cloning Project
 
+
 The project was divided into these phases :  
 * Data Collection
 * Data Pre-processing
@@ -24,12 +25,9 @@ Data Collection
     
  * <b>Dataset sample </b>: 
      
-    Front camera  
-    ![alt text][f_sample]  
-    Left Camera  
-    ![alt text][l_sample]  
-    Right Camera    
-    ![alt text][r_sample]  
+    Front camera  | Left Camera  | Right Camera    
+    -------------- | ------------ |------------ 
+    ![alt text][f_sample]  | ![alt text][l_sample] |  ![alt text][r_sample]  
      
  Data Pre-processing 
  ---
@@ -79,7 +77,7 @@ Data Collection
  * <b> Transfer learning </b> : 
     * After the initial training, I observed that car was veering off track at a few specific points.  
     * To fix these, there were mainly 2 options for me. The first option is to append the faulty parts of track onto the train set and retrain the whole. Instead, in order to save time, I used transfer learning by freezing all the layers expect the fully-connected dense layers at the end of the neural net. 
-    * During transfer learning, the model kinda looked liked this :  
+    * During transfer learning, the model kinda looked liked this :    
     
      Layer      | Was this layer frozen ?   
     ------------------|-------------------------|
@@ -101,7 +99,10 @@ Data Collection
     dropout_3 (Dropout)  |   N         
     dense_3 (Dense)    |     N       
     dense_4 (Dense)   |      N
- 
+    
+ Testing
+ ---
+ * The model was tested on both the tracks. The model succesfully drives track 1, and also completes around 95% of track 2.
  
  
  
