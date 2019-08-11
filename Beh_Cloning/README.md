@@ -81,7 +81,26 @@ Data Collection
     * To fix these, there were mainly 2 options for me. The first option is to append the faulty parts of track onto the train set and retrain the whole. Instead, in order to save time, I used transfer learning by freezing all the layers expect the fully-connected dense layers at the end of the neural net. 
     * During transfer learning, the model kinda looked liked this :  
     
- 
+     Layer      | Was this layer frozen ?   
+    ------------------|-------------------------|
+    lambda_1 (Lambda)        |    Y         
+    cropping2d_1 (Cropping2D)   | Y        
+    conv2d_1 (Conv2D)           | Y      
+    max_pooling2d_1 (MaxPooling2D) | Y         
+    conv2d_2 (Conv2D)        | Y     
+    max_pooling2d_2 (MaxPooling2d) | Y         
+    conv2d_3 (Conv2D)        | Y     
+    conv2d_4 (Conv2D)        |  Y    
+    dropout_1 (Dropout)       | Y         
+    conv2d_5 (Conv2D)        | Y   
+    max_pooling2d_3 (MaxPooling2D) | Y         
+    flatten_1 (Flatten)      | Y         
+    dense_1 (Dense)         | N   
+    dropout_2 (Dropout)    | N         
+    dense_2 (Dense)       |  N      
+    dropout_3 (Dropout)  |   N         
+    dense_3 (Dense)    |     N       
+    dense_4 (Dense)   |      N
  
  
  
