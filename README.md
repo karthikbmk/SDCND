@@ -6,7 +6,7 @@
   | Lane Detection      | Complete |
   | Traffic Sign Classifier      | Complete      |
   | Advanced Lane Detection | Complete      |
-  | Behavioural Cloning | TBU      |
+  | Behavioural Cloning | Complete      |
   | Sensor Fusion with EKF (Extended Kalman Filters) | Complete      |
 
 ## Term II (Sep - Dec 2019)
