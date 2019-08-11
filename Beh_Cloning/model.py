@@ -43,6 +43,10 @@ class Model:
         return model
 
     def store_history(self, history_object):
+        '''
+        :param history_object: A history object containing the train/ validation losses
+        :return:
+        '''
         hist_path = self.params['history_path']
         plt.plot(history_object.history['loss'])
         plt.plot(history_object.history['val_loss'])
@@ -54,7 +58,7 @@ class Model:
 
     def freeze_layers(self, model, freeze_layer_ids):
         '''
-        :param model:
+        :param model: a keras model object
         :param freeze_layer_ids: Layer ids to be frozen
         :return: Frozen model
         '''
@@ -63,6 +67,15 @@ class Model:
         return model
 
     def fit_model(self, train_type, model, batch_size=32, out_model_name='model' ,epochs=4):
+
+        '''
+        :param train_type: This indicates what kind of training is it. Is it full training / transfer learning ?
+        :param model: keras model object
+        :param batch_size: batch size default 32
+        :param out_model_name: name of the model to be stored
+        :param epochs: An epoch is full pass through the whole training set
+        :return: None
+        '''
 
         #Load dataset
         csv_path = self.params[train_type]
@@ -85,7 +98,14 @@ class Model:
 
 
     def transfer_learn(self, model, train_type, freeze_layer_ids, batch_size=32, out_model_name = 'tl_model'):
-
+        '''
+        :param model: a keras object
+        :param train_type: This specifies that it is transfer learning and not full training
+        :param freeze_layer_ids: ids of the layers to be frozen during transfer learning
+        :param batch_size: 32
+        :param out_model_name: name of model to be saved
+        :return:
+        '''
         #Freeze Layers
         frozen_model = self.freeze_layers(model, freeze_layer_ids)
 
@@ -96,7 +116,12 @@ class Model:
         self.fit_model(train_type, frozen_model, batch_size, out_model_name, epochs=3)
 
     def do_transfer_learn(self, train_type, old_model_name, trained_version):
-
+        '''
+        :param train_type: Indicates that its transfer learning
+        :param old_model_name: Name of previously trained model
+        :param trained_version: a version (for my debugging purpose) that indicates which version of the model
+        :return:
+        '''
         #Load old model
         old_model = load_model(self.params['models_path'] + old_model_name)
         print ('loaded old model')
