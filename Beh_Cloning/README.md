@@ -1,6 +1,6 @@
 # Behavioral Cloning Project
 
-Track 1 (easy) | Track 2 (hard)
+Track-1 | Track-2
 --------------- | -------------
 ![alt_text][t1] | ![alt_text][t2]
 
@@ -108,9 +108,7 @@ Data Collection
     
  Testing
  ---
- * The model was tested on both the tracks. The model succesfully drives track 1, and also completes around 95% of track 2.
- 
- 
+ * The model was tested on both the tracks. The model succesfully drives track 1 and also completes around 95% of track 2.
  
  
  
@@ -120,4 +118,5 @@ Data Collection
 [l_sample]: ./misc/left_sample.jpg "Left view"
 [r_sample]: ./misc/right_sample.jpg "Right view"
 [t1]: ./misc/track1.gif
+[t2]: ./misc/track2.gif
 [loss]: ./misc/history.png
